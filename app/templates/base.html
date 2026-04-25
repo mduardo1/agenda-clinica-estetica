@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title or "Clinica Estetica" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+        <header class="topbar">
+            <a class="brand" href="{{ url_for('main.menu') }}">Clinica Estetica</a>
+            <nav class="topnav">
+                <a href="{{ url_for('procedures.index') }}">Procedimentos</a>
+                <a href="{{ url_for('clients.index') }}">Clientes</a>
+                <a href="{{ url_for('anamnesis.index') }}">Anamnese</a>
+                <a href="{{ url_for('appointments.calendar') }}">Agenda</a>
+                <a href="{{ url_for('appointments.management') }}">Gerenciamento</a>
+                <a href="{{ url_for('auth.logout') }}">Sair</a>
+            </nav>
+        </header>
+    {% endif %}
+
+    <main class="page">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-list">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

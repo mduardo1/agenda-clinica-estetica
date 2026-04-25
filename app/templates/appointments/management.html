@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Gerenciamento</p>
+        <h1>Resumo mensal</h1>
+    </div>
+</section>
+
+<section class="month-selector">
+    {% for number, name in months %}
+        <a class="{% if number == month %}active{% endif %}" href="{{ url_for('appointments.management', year=year, month=number) }}">
+            {{ name }}
+        </a>
+    {% endfor %}
+</section>
+
+<section class="summary-grid">
+    <article>
+        <span>Custo</span>
+        <strong>{{ total_cost|money }}</strong>
+    </article>
+    <article>
+        <span>Valor</span>
+        <strong>{{ total_price|money }}</strong>
+    </article>
+    <article>
+        <span>Lucro</span>
+        <strong>{{ total_profit|money }}</strong>
+    </article>
+</section>
+
+<section class="panel">
+    <h2>Procedimentos agendados</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>ID proc.</th>
+                    <th>Procedimento</th>
+                    <th>Cliente</th>
+                    <th>Custo</th>
+                    <th>Valor</th>
+                    <th>Lucro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.appointment_date.strftime("%d/%m/%Y") }}</td>
+                        <td>{{ appointment.start_time }}</td>
+                        <td>{{ appointment.procedure.id }}</td>
+                        <td>{{ appointment.procedure.name }}</td>
+                        <td>{{ appointment.client.full_name }}</td>
+                        <td>{{ appointment.procedure.cost|money }}</td>
+                        <td>{{ appointment.procedure.price|money }}</td>
+                        <td>{{ appointment.procedure.profit|money }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="8">Nenhum procedimento agendado neste mes.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

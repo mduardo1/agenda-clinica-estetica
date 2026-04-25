@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Agenda profissional</p>
+        <h1>Menu principal</h1>
+        <p>Organize clientes, procedimentos, fichas de anamnese, horarios e analise mensal em uma base unica.</p>
+    </div>
+</section>
+
+<section class="menu-grid">
+    <a class="menu-card" href="{{ url_for('procedures.index') }}">
+        <span>Procedimentos</span>
+        <small>Cadastro com custo, valor e lucro automatico.</small>
+    </a>
+    <a class="menu-card" href="{{ url_for('clients.index') }}">
+        <span>Clientes</span>
+        <small>Dados da cliente, WhatsApp e observacoes.</small>
+    </a>
+    <a class="menu-card" href="{{ url_for('anamnesis.index') }}">
+        <span>Ficha anamnese</span>
+        <small>Historico, restricoes e cuidados por cliente.</small>
+    </a>
+    <a class="menu-card" href="{{ url_for('appointments.calendar') }}">
+        <span>Agendamento</span>
+        <small>Mes, dia, horario AM/PM e duracao.</small>
+    </a>
+    <a class="menu-card" href="{{ url_for('appointments.management') }}">
+        <span>Gerenciamento</span>
+        <small>Visao mensal operacional e financeira.</small>
+    </a>
+</section>
+{% endblock %}

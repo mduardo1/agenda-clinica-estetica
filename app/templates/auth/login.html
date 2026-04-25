@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-shell">
+    <form class="auth-panel" method="post">
+        <h1>Acesso da clinica</h1>
+        <p>Use o usuario inicial <strong>admin</strong> e senha <strong>admin123</strong>.</p>
+
+        <label for="username">Usuario</label>
+        <input id="username" name="username" type="text" autocomplete="username" required>
+
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+</section>
+{% endblock %}

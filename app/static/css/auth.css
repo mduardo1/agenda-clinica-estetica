@@ -1,0 +1,25 @@
+.auth-shell {
+    display: grid;
+    min-height: calc(100vh - 120px);
+    place-items: center;
+}
+
+.auth-panel {
+    background: #ffffff;
+    border: 1px solid #ded9ce;
+    border-radius: 8px;
+    max-width: 420px;
+    padding: 28px;
+    width: 100%;
+}
+
+.auth-panel h1 {
+    color: #154d45;
+    margin: 0;
+}
+
+.auth-panel p {
+    color: #6d6a63;
+    line-height: 1.5;
+    margin: 8px 0 10px;
+}

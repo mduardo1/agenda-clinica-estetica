@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Ficha clinica</p>
+        <h1>Anamnese</h1>
+    </div>
+</section>
+
+<section class="layout-two">
+    <form class="panel" method="post">
+        <h2>Nova ficha</h2>
+
+        <label for="client_id">Cliente</label>
+        <select id="client_id" name="client_id" required>
+            <option value="">Selecione</option>
+            {% for client in clients %}
+                <option value="{{ client.id }}" {% if selected_client_id == client.id %}selected{% endif %}>
+                    #{{ client.id }} - {{ client.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="notes">Observacoes</label>
+        <textarea id="notes" name="notes" rows="5"></textarea>
+
+        <label for="restrictions">Restricoes</label>
+        <textarea id="restrictions" name="restrictions" rows="4"></textarea>
+
+        <label for="care_instructions">Cuidados recomendados</label>
+        <textarea id="care_instructions" name="care_instructions" rows="4"></textarea>
+
+        <button type="submit">Salvar ficha</button>
+    </form>
+
+    <section class="panel">
+        <h2>Historico</h2>
+        <form class="inline-filter" method="get">
+            <select name="client_id">
+                <option value="">Selecionar cliente</option>
+                {% for client in clients %}
+                    <option value="{{ client.id }}" {% if selected_client_id == client.id %}selected{% endif %}>
+                        #{{ client.id }} - {{ client.full_name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% for record in records %}
+            <article class="record">
+                <strong>{{ record.created_at.strftime("%d/%m/%Y %H:%M") }}</strong>
+                <p>{{ record.notes or "Sem observacoes." }}</p>
+                <p><b>Restricoes:</b> {{ record.restrictions or "Nenhuma informada." }}</p>
+                <p><b>Cuidados:</b> {{ record.care_instructions or "Nenhum informado." }}</p>
+            </article>
+        {% else %}
+            <p class="muted">Selecione uma cliente para visualizar fichas salvas.</p>
+        {% endfor %}
+    </section>
+</section>
+{% endblock %}
