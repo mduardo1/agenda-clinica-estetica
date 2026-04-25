@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Cadastro</p>
+        <h1>Procedimentos</h1>
+    </div>
+</section>
+
+<section class="layout-two">
+    <form class="panel" method="post">
+        <h2>Novo procedimento</h2>
+
+        <label for="name">Nome do procedimento</label>
+        <input id="name" name="name" type="text" required>
+
+        <label for="description">Descricao</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+
+        <div class="form-row">
+            <div>
+                <label for="cost">Custo em reais</label>
+                <input id="cost" name="cost" type="number" min="0" step="0.01" required>
+            </div>
+            <div>
+                <label for="price">Valor em reais</label>
+                <input id="price" name="price" type="number" min="0" step="0.01" required>
+            </div>
+        </div>
+
+        <output class="profit-output" id="profitOutput">Lucro: R$ 0,00</output>
+        <button type="submit">Salvar procedimento</button>
+    </form>
+
+    <section class="panel">
+        <h2>Procedimentos cadastrados</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Custo</th>
+                        <th>Valor</th>
+                        <th>Lucro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for procedure in procedures %}
+                        <tr>
+                            <td>{{ procedure.id }}</td>
+                            <td>{{ procedure.name }}</td>
+                            <td>{{ procedure.cost|money }}</td>
+                            <td>{{ procedure.price|money }}</td>
+                            <td>{{ procedure.profit|money }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5">Nenhum procedimento cadastrado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/procedure_profit.js') }}"></script>
+{% endblock %}

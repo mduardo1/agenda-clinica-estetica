@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Agenda</p>
+        <h1>Agendamento de clientes</h1>
+    </div>
+</section>
+
+<section class="month-selector">
+    {% for number, name in months %}
+        <a class="{% if number == month %}active{% endif %}" href="{{ url_for('appointments.calendar', year=year, month=number) }}">
+            {{ name }}
+        </a>
+    {% endfor %}
+</section>
+
+<section class="layout-two">
+    <form class="panel" method="post" action="{{ url_for('appointments.create') }}">
+        <h2>Novo agendamento</h2>
+        <input type="hidden" name="year" value="{{ year }}">
+        <input type="hidden" name="month" value="{{ month }}">
+
+        <label for="appointment_date">Dia</label>
+        <input id="appointment_date" name="appointment_date" type="date" value="{{ selected_date }}" required>
+
+        <label for="client_id">Cliente pelo ID</label>
+        <select id="client_id" name="client_id" required>
+            <option value="">Selecione</option>
+            {% for client in clients %}
+                <option value="{{ client.id }}" data-name="{{ client.full_name }}" data-whatsapp="{{ client.whatsapp }}">
+                    #{{ client.id }} - {{ client.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+        <div class="info-box" id="clientInfo">Nome e WhatsApp aparecem aqui.</div>
+
+        <label for="procedure_id">Procedimento pelo ID</label>
+        <select id="procedure_id" name="procedure_id" required>
+            <option value="">Selecione</option>
+            {% for procedure in procedures %}
+                <option
+                    value="{{ procedure.id }}"
+                    data-name="{{ procedure.name }}"
+                    data-cost="{{ procedure.cost|money }}"
+                    data-price="{{ procedure.price|money }}"
+                    data-profit="{{ procedure.profit|money }}"
+                >
+                    #{{ procedure.id }} - {{ procedure.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <div class="info-box" id="procedureInfo">Nome, custo, valor e lucro aparecem aqui.</div>
+
+        <div class="form-row three">
+            <div>
+                <label for="hour">Hora</label>
+                <select id="hour" name="hour" required>
+                    {% for item in range(1, 13) %}
+                        <option value="{{ item }}">{{ "%02d"|format(item) }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="minute">Minuto</label>
+                <select id="minute" name="minute" required>
+                    <option value="0">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                </select>
+            </div>
+            <div>
+                <label for="period">Periodo</label>
+                <select id="period" name="period" required>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
+        </div>
+
+        <label for="duration_minutes">Duracao do procedimento em minutos</label>
+        <input id="duration_minutes" name="duration_minutes" type="number" min="15" step="15" value="60" required>
+
+        <button type="submit">Salvar agendamento</button>
+    </form>
+
+    <section class="panel">
+        <h2>Agendamentos do mes</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Hora</th>
+                        <th>Cliente</th>
+                        <th>WhatsApp</th>
+                        <th>Procedimento</th>
+                        <th>Duracao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.appointment_date.strftime("%d/%m/%Y") }}</td>
+                            <td>{{ appointment.start_time }}</td>
+                            <td>{{ appointment.client.full_name }}</td>
+                            <td>{{ appointment.client.whatsapp }}</td>
+                            <td>{{ appointment.procedure.name }}</td>
+                            <td>{{ appointment.duration_minutes }} min</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6">Nenhum agendamento neste mes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Lembretes simulados</h2>
+        {% for reminder in reminders %}
+            <article class="record">
+                <strong>{{ reminder.whatsapp }}</strong>
+                <p>{{ reminder.message }}</p>
+            </article>
+        {% else %}
+            <p class="muted">Nenhum lembrete previsto para a proxima hora.</p>
+        {% endfor %}
+    </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/appointment_form.js') }}"></script>
+{% endblock %}

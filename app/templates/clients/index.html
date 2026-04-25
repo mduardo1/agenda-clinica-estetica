@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Cadastro</p>
+        <h1>Clientes e ficha inicial</h1>
+    </div>
+</section>
+
+<section class="layout-two">
+    <form class="panel" method="post">
+        <h2>Nova cliente</h2>
+
+        <label for="full_name">Nome completo</label>
+        <input id="full_name" name="full_name" type="text" required>
+
+        <div class="form-row">
+            <div>
+                <label for="birth_date">Data de nascimento</label>
+                <input id="birth_date" name="birth_date" type="date">
+            </div>
+            <div>
+                <label for="whatsapp">Telefone / WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="text" required>
+            </div>
+        </div>
+
+        <label for="anamnesis_notes">Observacoes da anamnese</label>
+        <textarea id="anamnesis_notes" name="anamnesis_notes" rows="4"></textarea>
+
+        <label for="restrictions">Restricoes ou cuidados</label>
+        <textarea id="restrictions" name="restrictions" rows="3"></textarea>
+
+        <button type="submit">Salvar cliente</button>
+    </form>
+
+    <section class="panel">
+        <h2>Clientes cadastradas</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>WhatsApp</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.full_name }}</td>
+                            <td>{{ client.whatsapp }}</td>
+                            <td>{{ client.created_at.strftime("%d/%m/%Y") }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="4">Nenhuma cliente cadastrada.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endblock %}
